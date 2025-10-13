@@ -1,0 +1,78 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerMovement : MonoBehaviour
+{
+    [Header("Movement")]
+    public float speed = 6f;
+    public float sprintMultiplier = 2f;
+    public float jumpHeight = 1.5f;
+    public float gravity = -9.81f;
+
+    [Header("Look")]
+    public Transform cameraHolder;
+    public float mouseSensitivity = 2f;
+    private float xRotation = 0f;
+
+    private CharacterController controller;
+    private Vector3 velocity;
+    private bool isGrounded;
+
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction sprintAction;
+    private InputAction jumpAction;
+    private InputAction lookAction;
+
+    void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
+        sprintAction = playerInput.actions["Sprint"];
+        jumpAction = playerInput.actions["Jump"];
+        lookAction = playerInput.actions["Look"];
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+    }
+
+    void Update()
+    {
+        isGrounded = controller.isGrounded;
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        float currentSpeed = sprintAction.IsPressed() ? speed * sprintMultiplier : speed;
+        Vector3 move = transform.right * input.x + transform.forward * input.y;
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        if (jumpAction.triggered && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+
+        HandleLook();
+
+    }
+
+    void HandleLook()
+    {
+        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+        float mouseX = lookInput.x * mouseSensitivity;
+        float mouseY = lookInput.y * mouseSensitivity;
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+    }
+}
