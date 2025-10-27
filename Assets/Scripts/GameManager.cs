@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f); // small delay after death
 
-        var player = Object.FindFirstObjectByType<PlayerController>();
+        var player = Object.FindFirstObjectByType<PlayerMovement>();
         if (player != null && RespawnPoint != null)
         {
             Debug.Log("Respawning player at: " + RespawnPoint.position);

@@ -10,17 +10,17 @@ public class Pickups : MonoBehaviour
 
     public PickupType pickupType = PickupType.Life; // Type of the pickup
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerController pc = collision.GetComponent<PlayerController>();
-            Animator animator = collision.GetComponent<Animator>();
-            Animator pickupAnimator = GetComponent<Animator>();
+            PlayerMovement pc = collision.GetComponent<PlayerMovement>();
+            //Animator animator = collision.GetComponent<Animator>();
+            //Animator pickupAnimator = GetComponent<Animator>();
 
-            if (pickupAnimator != null)
+            //if (pickupAnimator != null)
             {
-                pickupAnimator.SetTrigger("PickupGet");
+                //pickupAnimator.SetTrigger("PickupGet");
             }
 
             switch (pickupType)
@@ -35,7 +35,8 @@ public class Pickups : MonoBehaviour
                     Debug.Log("Score collected! Current score: " + pc.Score);
                     break;
                 case PickupType.Powerup:
-                    pc.ActivateJumpForceChange();
+                    //pc.ActivateJumpForceChange();
+                    Debug.Log("Powerup collected! Jump force increased.");
                     break;
             }
          

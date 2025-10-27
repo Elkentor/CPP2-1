@@ -18,12 +18,12 @@ public class CollectibleManager : MonoBehaviour
         return collectibles[index];
     }
 
-    public Vector2 GetRandomSpawnPoint()
+    public Vector3 GetRandomSpawnPoint()
     {
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
             Debug.LogWarning("Spawn point list is empty!");
-            return Vector2.zero;
+            return Vector3.zero;
         }
 
         int index = Random.Range(0, spawnPoints.Count);
@@ -33,7 +33,7 @@ public class CollectibleManager : MonoBehaviour
     public void SpawnRandomCollectible()
     {
         GameObject collectible = GetRandomCollectible();
-        Vector2 spawnPos = GetRandomSpawnPoint();
+        Vector3 spawnPos = GetRandomSpawnPoint();
 
         if (collectible != null)
         {

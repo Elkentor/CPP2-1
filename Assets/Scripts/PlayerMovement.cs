@@ -10,6 +10,12 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
 
+    [Header("Stats")]
+    public int maxHealth = 100;
+    public int currentHealth;
+    public int Score = 0;
+    public int Lives = 1;
+
     [Header("Look")]
     public Transform cameraHolder;
     public float mouseSensitivity = 2f;
@@ -75,4 +81,12 @@ public class PlayerMovement : MonoBehaviour
         cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
+
+    public void ResetState()
+    {
+        currentHealth = maxHealth;
+        velocity = Vector3.zero;
+    }
+
+   
 }
