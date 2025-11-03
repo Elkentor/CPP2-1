@@ -30,6 +30,12 @@ public class PlayerMovement : MonoBehaviour
     private InputAction sprintAction;
     private InputAction jumpAction;
     private InputAction lookAction;
+    private InputAction attackAction;
+    private InputAction dodgeAction;
+    private InputAction interactAction;
+    private InputAction hitAction;
+
+    private Animator animator;
 
     void Awake()
     {
@@ -38,12 +44,18 @@ public class PlayerMovement : MonoBehaviour
         sprintAction = playerInput.actions["Sprint"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
+        attackAction = playerInput.actions["Attack"];
+        dodgeAction = playerInput.actions["Dodge"];
+        interactAction = playerInput.actions["Interact"];
+        hitAction = playerInput.actions["Hit"];
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -56,19 +68,50 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 input = moveAction.ReadValue<Vector2>();
         float currentSpeed = sprintAction.IsPressed() ? speed * sprintMultiplier : speed;
-        Vector3 move = transform.right * input.x + transform.forward * input.y;
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        Vector3 move = (transform.right * input.x) + (transform.forward * input.y);
+        controller.Move(currentSpeed * Time.deltaTime * move);
 
-        if (jumpAction.triggered && isGrounded)
+        animator.SetFloat("Speed", input.magnitude);
+
+        // jump
+        if (jumpAction != null && jumpAction.triggered && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetBool("IsJumping",true);
+        }
+        else
+        {
+            animator.SetBool("IsJumping", false);
         }
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        HandleLook();
+        // Attack
+        if (attackAction != null && attackAction.triggered)
+        {
+            animator.SetTrigger("Attack");
+        }
 
+        // Dodge
+        if (dodgeAction != null && dodgeAction.triggered)
+        {
+            animator.SetTrigger("Dodge");
+        }
+
+        // Hit
+        if (hitAction != null && hitAction.triggered)
+        {
+            animator.SetTrigger("Hit");
+        }
+
+        // Death
+        if (currentHealth <= 0)
+        {
+            animator.SetBool("IsDead", true);
+        }
+
+        HandleLook();
     }
 
     void HandleLook()
@@ -86,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
     {
         currentHealth = maxHealth;
         velocity = Vector3.zero;
+        animator.SetBool("IsDead", false);
     }
 
    
