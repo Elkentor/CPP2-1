@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private InputAction dodgeAction;
     private InputAction interactAction;
     private InputAction hitAction;
+    private InputAction punch;
+    private InputAction kick;   
 
     private Animator animator;
 
@@ -50,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
         dodgeAction = playerInput.actions["Dodge"];
         interactAction = playerInput.actions["Interact"];
         hitAction = playerInput.actions["Hit"];
+        punch = playerInput.actions["Punch"];
+        kick = playerInput.actions["Kick"];
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -108,6 +112,18 @@ public class PlayerMovement : MonoBehaviour
         if (hitAction != null && hitAction.triggered)
         {
             animator.SetTrigger("Hit");
+        }
+
+        // Punch
+        if (punch != null && punch.triggered)
+        {
+            animator.SetTrigger("Punch");
+        }
+
+        // Kick
+        if (kick != null && kick.triggered)
+        {
+            animator.SetTrigger("Kick");
         }
 
         // Death
