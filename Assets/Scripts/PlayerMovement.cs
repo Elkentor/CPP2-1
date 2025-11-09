@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jumpAction;
     private InputAction lookAction;
     private InputAction attackAction;
+    private InputAction block;
     private InputAction dodgeAction;
     private InputAction interactAction;
     private InputAction hitAction;
@@ -45,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
         attackAction = playerInput.actions["Attack"];
+        block = playerInput.actions["Block"];
         dodgeAction = playerInput.actions["Dodge"];
         interactAction = playerInput.actions["Interact"];
         hitAction = playerInput.actions["Hit"];
@@ -71,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = (transform.right * input.x) + (transform.forward * input.y);
         controller.Move(currentSpeed * Time.deltaTime * move);
 
-        animator.SetFloat("Speed", input.magnitude);
+        animator.SetFloat("Speed", input.magnitude * (sprintAction.IsPressed() ? sprintMultiplier : 1f));
 
         // jump
         if (jumpAction != null && jumpAction.triggered && isGrounded)
@@ -96,6 +98,9 @@ public class PlayerMovement : MonoBehaviour
         // Dodge
         if (dodgeAction != null && dodgeAction.triggered)
         {
+            input = moveAction.ReadValue<Vector2>();
+            animator.SetFloat("DodgeX", input.x);
+            animator.SetFloat("DodgeY", input.y);
             animator.SetTrigger("Dodge");
         }
 
@@ -109,6 +114,12 @@ public class PlayerMovement : MonoBehaviour
         if (currentHealth <= 0)
         {
             animator.SetBool("IsDead", true);
+        }
+
+        // Block
+        if (block != null && block.triggered)
+        {
+            animator.SetTrigger("Block");
         }
 
         HandleLook();
