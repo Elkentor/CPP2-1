@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2500982640111321315}
   - component: {fileID: 1520701412194783046}
   - component: {fileID: 3674491621964970892}
-  - component: {fileID: 5613164530639843116}
+  - component: {fileID: 1505900686548299770}
+  - component: {fileID: 8872501024299033200}
   m_Layer: 0
   m_Name: Barrel_A
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3026021859598621273}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 158.19315, y: 1.575566, z: 367.6776}
+  m_LocalPosition: {x: 185.12244, y: 0.49999237, z: 366.49823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,8 +91,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5613164530639843116
-CapsuleCollider:
+--- !u!135 &1505900686548299770
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,8 +109,19 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8872501024299033200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026021859598621273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafbdf6bef612b744ac40aea70adf856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pickups
+  pickupType: 0

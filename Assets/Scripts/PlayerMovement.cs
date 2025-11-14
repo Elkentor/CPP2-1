@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
+    public Pickups pickupInRange;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -136,6 +137,13 @@ public class PlayerMovement : MonoBehaviour
         if (block != null && block.triggered)
         {
             animator.SetTrigger("Block");
+        }
+
+        // Interact
+        if (interactAction != null && interactAction.triggered && pickupInRange != null)
+        {
+            animator.SetTrigger("Interact");
+            pickupInRange.Collect(this);
         }
 
         HandleLook();

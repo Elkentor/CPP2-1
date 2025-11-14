@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 5383898949842910517}
   - component: {fileID: 9014139391965344400}
   - component: {fileID: 6556219943873136218}
-  - component: {fileID: 812730158320958866}
+  - component: {fileID: 7733430421094573981}
+  - component: {fileID: 8827198224387930243}
   m_Layer: 0
   m_Name: jar_A_small
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4754854790080259983}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 157.86285, y: 1.1585181, z: 371.76596}
+  m_LocalPosition: {x: 186.54544, y: -0.00000385195, z: 360.6582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,8 +91,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &812730158320958866
-CapsuleCollider:
+--- !u!135 &7733430421094573981
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,8 +109,19 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2830105
-  m_Height: 0.54999995
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 1
   m_Center: {x: -0.00000020861626, y: 0.27499998, z: 0.000000029802322}
+--- !u!114 &8827198224387930243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754854790080259983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafbdf6bef612b744ac40aea70adf856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pickups
+  pickupType: 2

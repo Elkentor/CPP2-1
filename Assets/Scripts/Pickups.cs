@@ -5,42 +5,61 @@ public class Pickups : MonoBehaviour
     {
         Life = 0,
         Score = 1,
-        Powerup = 2
+        HP = 2
     }
 
     public PickupType pickupType = PickupType.Life; // Type of the pickup
+    private bool playerInRange = false;
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerMovement pc = collision.GetComponent<PlayerMovement>();
-            //Animator animator = collision.GetComponent<Animator>();
-            //Animator pickupAnimator = GetComponent<Animator>();
+            playerInRange = true;
 
-            //if (pickupAnimator != null)
-            {
-                //pickupAnimator.SetTrigger("PickupGet");
-            }
+            PlayerMovement pm = other.GetComponent<PlayerMovement>();
+            pm.pickupInRange = this;
 
-            switch (pickupType)
-            {
-                case PickupType.Life:
-                    pc.Lives++;
-                    Debug.Log("Life collected! Current lives: " + pc.Lives);
-                    break;
-                case PickupType.Score:
-                    pc.Score++;
-                    //if (animator != null)
-                    Debug.Log("Score collected! Current score: " + pc.Score);
-                    break;
-                case PickupType.Powerup:
-                    //pc.ActivateJumpForceChange();
-                    Debug.Log("Powerup collected! Jump force increased.");
-                    break;
-            }
-         
-            Destroy(gameObject, 1f); // Destroy the pickup after collection
+            UI_Prompt.Instance.Show("Interact");
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+
+            PlayerMovement pm = other.GetComponent<PlayerMovement>();
+            pm.pickupInRange = null;
+
+            UI_Prompt.Instance.Hide();
+        }
+    }
+
+    public void Collect(PlayerMovement pc)
+    {
+        if (!playerInRange) return;
+
+        switch (pickupType)
+        {
+            case PickupType.Life:
+                pc.Lives++;
+                Debug.Log("Life collected! Current lives: " + pc.Lives);
+                break;
+
+            case PickupType.Score:
+                pc.Score++;
+                Debug.Log("Score collected! Current score: " + pc.Score);
+                break;
+
+            case PickupType.HP:
+                pc.currentHealth += 20; // Increase health by 20
+                Debug.Log("Powerup collected! Jump force increased.");
+                break;
+        }
+
+        UI_Prompt.Instance.Hide();
+        Destroy(gameObject);
     }
 }
