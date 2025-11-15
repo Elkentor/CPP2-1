@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EndPointTrigger : QuitGame
+public class EndPointTrigger : MonoBehaviour
 {
     public GameObject quitMenuUI; // Assign your UI panel in the Inspector
 
