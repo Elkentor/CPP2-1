@@ -1590,7 +1590,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 28ccccd0afa505f4493182e3ff90ea69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1629,13 +1629,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767147440}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.008104375, y: -0.98964363, z: 0.0011736142, w: 0.14331274}
   m_LocalPosition: {x: 167.82, y: 2.7, z: 375.9}
   m_LocalScale: {x: 7.0302, y: 4.3091, z: 4.4755}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.266, y: -163.522, z: -0.9}
 --- !u!114 &767147445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,6 +1701,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_A
       objectReference: {fileID: 0}
+    - target: {fileID: 1186639520149080724, guid: fb812b8245b271c408c82b13fc235714, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1186639520149080724, guid: fb812b8245b271c408c82b13fc235714, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -3454980128204284210, guid: 92b29090d6fd9e24db698fc7b0aab2bd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1769,6 +1777,7 @@ GameObject:
   - component: {fileID: 1047093375}
   - component: {fileID: 1047093377}
   - component: {fileID: 1047093378}
+  - component: {fileID: 1047093379}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1916,6 +1925,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1047093379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047093372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565df79386ef82546943837f85e374c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
 --- !u!4 &1090241746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}

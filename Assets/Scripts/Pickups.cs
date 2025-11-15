@@ -54,8 +54,8 @@ public class Pickups : MonoBehaviour
                 break;
 
             case PickupType.HP:
-                pc.currentHealth += 20; // Increase health by 20
-                Debug.Log("Powerup collected! Jump force increased.");
+                pc.currentHealth = Mathf.Min(pc.currentHealth + 20, pc.maxHealth);
+                Debug.Log("HP collected! Current Lives: " + pc.currentHealth);
                 break;
         }
 
