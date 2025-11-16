@@ -107,9 +107,7 @@ public class EnemyAI : MonoBehaviour
         {
             animator.SetTrigger("Attack");
             lastAttackTime = Time.time;
-
-            // If player has health script:
-            // player.GetComponent<PlayerHealth>().TakeDamage(5);
+            player.GetComponent<PlayerHealth>().TakeDamage(5);
         }
     }
 
@@ -152,4 +150,16 @@ public class EnemyAI : MonoBehaviour
         agent.enabled = false;
         Destroy(gameObject, 3f); // Wait for death animation
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        // detection range
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        // attack range
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
 }

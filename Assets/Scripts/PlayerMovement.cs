@@ -124,6 +124,8 @@ public class PlayerMovement : MonoBehaviour
         if (block != null && block.triggered)
         {
             animator.SetTrigger("Block");
+            GetComponent<PlayerHealth>().isBlocking = true;
+            Invoke(nameof(ResetBlock), 1f);
         }
 
         // Interact
@@ -150,5 +152,10 @@ public class PlayerMovement : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
+    }
+
+    void ResetBlock()
+    {
+        GetComponent<PlayerHealth>().isBlocking = false;
     }
 }

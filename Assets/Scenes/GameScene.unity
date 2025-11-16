@@ -1945,10 +1945,10 @@ GameObject:
   - component: {fileID: 1047093374}
   - component: {fileID: 1047093373}
   - component: {fileID: 1047093376}
+  - component: {fileID: 1047093379}
   - component: {fileID: 1047093375}
   - component: {fileID: 1047093377}
   - component: {fileID: 1047093378}
-  - component: {fileID: 1047093379}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player

@@ -6,10 +6,9 @@ public class PlayerHealth : MonoBehaviour
     private float currentHealth;
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => maxHealth;
-
-
     private Animator anim;
     private bool isDead = false;
+    public bool isBlocking = false;
 
     void Start()
     {
@@ -20,6 +19,12 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float amount)
     {
         if (isDead) return;
+
+        if (isBlocking)
+        {
+            Debug.Log("Attack blocked!");
+            return;
+        }
 
         currentHealth -= amount;
         Debug.Log($"Player took {amount} damage. Current health: {currentHealth}");
