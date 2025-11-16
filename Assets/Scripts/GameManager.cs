@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public enum GameState { Title, Playing, GameOver }
 
     public int Score { get; private set; } = 0;
-    public int PlayerLives { get; private set; } = 3;
+    public int Lives { get; private set; } = 3;
 
     private void Awake()
     {
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene("TitleMenu");
                 break;
             case GameState.Playing:
-                PlayerLives = 3;
+                Lives = 3;
                 Score = 0;
                 SceneManager.LoadScene("GameScene");
                 StartCoroutine(AssignRespawnPointAfterSceneLoad());
@@ -78,9 +78,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDied()
     {
-        PlayerLives--;
+        Lives--;
 
-        if (PlayerLives > 0)
+        if (Lives > 0)
         {
             StartCoroutine(RespawnPlayer());
         }
@@ -99,8 +99,8 @@ public class GameManager : MonoBehaviour
 
     public void AddLife(int amount)
     {
-        PlayerLives = Mathf.Clamp(PlayerLives + amount, 0, maxLives);
-        Debug.Log($"Life updated: {PlayerLives}");
+        Lives = Mathf.Clamp(Lives + amount, 0, maxLives);
+        Debug.Log($"Life updated: {Lives}");
     }
 
     private IEnumerator RespawnPlayer()
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
             {
                 health.ResetHealth(); // restore health
             }
-
+            
         }
         else
         {

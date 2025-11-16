@@ -10,12 +10,6 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
 
-    [Header("Stats")]
-    public int maxHealth = 100;
-    public int currentHealth;
-    public int Score = 0;
-    public int Lives = 1;
-
     [Header("Look")]
     public Transform cameraHolder;
     public float mouseSensitivity = 2f;
@@ -57,12 +51,11 @@ public class PlayerMovement : MonoBehaviour
         kick = playerInput.actions["Kick"];
         Cursor.lockState = CursorLockMode.Locked;
     }
-
+    
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        currentHealth = maxHealth;
     }
 
     void Update()
@@ -127,12 +120,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Kick");
         }
 
-        // Death
-        if (currentHealth <= 0)
-        {
-            animator.SetBool("IsDead", true);
-        }
-
         // Block
         if (block != null && block.triggered)
         {
@@ -149,6 +136,11 @@ public class PlayerMovement : MonoBehaviour
         HandleLook();
     }
 
+    public void ResetState()
+    {
+        velocity = Vector3.zero;
+    }
+
     void HandleLook()
     {
         Vector2 lookInput = lookAction.ReadValue<Vector2>();
@@ -159,13 +151,4 @@ public class PlayerMovement : MonoBehaviour
         cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
-
-    public void ResetState()
-    {
-        currentHealth = maxHealth;
-        velocity = Vector3.zero;
-        animator.SetBool("IsDead", false);
-    }
-
-   
 }

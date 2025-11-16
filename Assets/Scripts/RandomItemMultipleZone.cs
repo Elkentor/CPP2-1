@@ -5,10 +5,11 @@ public class CollectibleZoneManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> collectibles; // Assign in Inspector
     [SerializeField] private List<Transform> spawnPoints;   // Assign in Inspector
+    public float spreadRadius = 5f;
 
     void Start()
     {
-        SpawnMultipleCollectibles(3); // Spawn 3 collectibles at random spawn points
+        SpawnMultipleCollectibles(3); // Spawn 3 collectibles at random spawn points zone
     }
 
     public void SpawnMultipleCollectibles(int count)
@@ -34,7 +35,13 @@ public class CollectibleZoneManager : MonoBehaviour
 
             usedIndices.Add(index);
 
-            Instantiate(collectible, spawnPoints[index].position, Quaternion.identity);
+            // OFFSET ALÉATOIRE AUTOUR DU POINT
+            Vector3 offset = Random.insideUnitSphere * spreadRadius;
+            offset.y = 0; // reste au sol
+
+            Vector3 finalPos = spawnPoints[index].position + offset;
+
+            Instantiate(collectible, finalPos, Quaternion.identity);
         }
     }
 

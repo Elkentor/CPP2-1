@@ -4,6 +4,9 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100f;
     private float currentHealth;
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+
 
     private Animator anim;
     private bool isDead = false;

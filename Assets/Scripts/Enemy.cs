@@ -1,63 +1,155 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-
-//abstract class is a class that cannot be instantiated, but can be inherited from - if you want to create a base class that other classes can inherit from, but you don't want to allow instantiation of the base class, this is the way to go.
-[RequireComponent(typeof(SpriteRenderer), typeof(Animator))]
-public abstract class Enemy : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
-    // private - non accessible from other scripts, only accessible from this class - if you want to keep a variable private and not accessible from other scripts, this is the way to go. The accessiblity is limited to this class only and childern of this class will not be able to access it.
-    // protected - private for the entire inheritance hierarchy of this class - if you want to keep a variable private but accessible from child classes, this is the way to go. The accessiblity is limited to this class and its children only.
-    // public - a variable that is publicly accessible from other scripts - if an object has a instance of this class (via reference from another class or via GetComponent)
-    // this can be a problem if you want to change the variable but don't want other scripts to be able to change it. Tracking down bugs can be difficult if you have many
-    // scripts that can change the variable.
-
-
-
-    protected SpriteRenderer sr;
-    protected Animator anim;
-    protected int health;
-
-    [SerializeField] private int maxHealth = 5;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // Virtual - a method that can be overridden in child classes - if you want to allow child classes to change the behavior of a method, this is the way to go.
-    protected virtual void Start()
+    public enum State
     {
-        sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-
-        if (maxHealth <= 0)
-        {
-            Debug.LogError("Max health must be greater than 0. Setting to default value of 5.");
-            maxHealth = 5;
-        }
-
-        health = maxHealth;
+        Patrol,
+        Chase,
+        Attack,
+        Hit,
+        Dead
     }
 
-    public virtual void TakeDamage(int damageValue, DamageType damageType = DamageType.Default)
+    [Header("Stats")]
+    public int maxHealth = 20;
+    private int currentHealth;
+
+    [Header("AI Settings")]
+    public float detectionRange = 10f;
+    public float attackRange = 2f;
+    public float attackCooldown = 1.5f;
+    private float lastAttackTime = 0f;
+
+    [Header("Patrol")]
+    public Transform[] patrolPoints;
+    private int currentPatrolIndex = 0;
+
+    private State currentState = State.Patrol;
+
+    private NavMeshAgent agent;
+    private Animator animator;
+
+    private Transform player;
+
+    void Start()
     {
-        health -= damageValue;
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
-        if (health <= 0)
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        currentHealth = maxHealth;
+
+        if (patrolPoints.Length > 0)
+            MoveToNextPatrolPoint();
+    }
+
+    void Update()
+    {
+        if (currentState == State.Dead) return;
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        switch (currentState)
         {
-            anim.SetTrigger("Death");
+            case State.Patrol:
+                PatrolBehavior(distanceToPlayer);
+                break;
 
-            // Destroy the enemy after the death animation is complete
-            if (transform.parent != null)
-            {
-                Destroy(transform.parent.gameObject, 0.5f); // Adjust the delay as needed for the animation
-            }
-            else
-            {
-                Destroy(gameObject, 0.5f); // If no parent, destroy this game object directly
-            }
+            case State.Chase:
+                ChaseBehavior(distanceToPlayer);
+                break;
+
+            case State.Attack:
+                AttackBehavior(distanceToPlayer);
+                break;
         }
     }
-}
 
-public enum DamageType
-{
-    Default,
-    JumpedOn
+    private void PatrolBehavior(float distanceToPlayer)
+    {
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            MoveToNextPatrolPoint();
+
+        if (distanceToPlayer <= detectionRange)
+            SwitchState(State.Chase);
+    }
+
+    private void ChaseBehavior(float distanceToPlayer)
+    {
+        agent.SetDestination(player.position);
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+
+        if (distanceToPlayer <= attackRange)
+            SwitchState(State.Attack);
+
+        if (distanceToPlayer > detectionRange + 3f)
+            SwitchState(State.Patrol);
+    }
+
+    private void AttackBehavior(float distanceToPlayer)
+    {
+        agent.ResetPath();
+        animator.SetFloat("Speed", 0);
+        transform.LookAt(player);
+
+        if (distanceToPlayer > attackRange)
+        {
+            SwitchState(State.Chase);
+            return;
+        }
+
+        if (Time.time > lastAttackTime + attackCooldown)
+        {
+            animator.SetTrigger("Attack");
+            lastAttackTime = Time.time;
+
+            // If player has health script:
+            // player.GetComponent<PlayerHealth>().TakeDamage(5);
+        }
+    }
+
+    private void SwitchState(State newState)
+    {
+        currentState = newState;
+    }
+
+    private void MoveToNextPatrolPoint()
+    {
+        if (patrolPoints.Length == 0) return;
+
+        agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+
+        currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+    }
+
+    // ------------------- DAMAGE & DEATH -------------------
+
+    public void TakeDamage(int dmg)
+    {
+        if (currentState == State.Dead) return;
+
+        currentHealth -= dmg;
+
+        if (animator != null)
+            animator.SetTrigger("Hit");
+
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        currentState = State.Dead;
+
+        if (animator != null)
+            animator.SetTrigger("Die");
+
+        agent.enabled = false;
+        Destroy(gameObject, 3f); // Wait for death animation
+    }
 }

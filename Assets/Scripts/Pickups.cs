@@ -1,3 +1,4 @@
+﻿using System.Diagnostics;
 using UnityEngine;
 public class Pickups : MonoBehaviour
 {
@@ -44,18 +45,19 @@ public class Pickups : MonoBehaviour
         switch (pickupType)
         {
             case PickupType.Life:
-                pc.Lives++;
-                Debug.Log("Life collected! Current lives: " + pc.Lives);
+                GameManager.Instance.AddLife(1);
+                UnityEngine.Debug.Log("Collected LIFE → +1 life");
                 break;
 
             case PickupType.Score:
-                pc.Score++;
-                Debug.Log("Score collected! Current score: " + pc.Score);
+                GameManager.Instance.AddScore(1);
+                UnityEngine.Debug.Log("Collected SCORE → +1 point");
                 break;
 
             case PickupType.HP:
-                pc.currentHealth = Mathf.Min(pc.currentHealth + 20, pc.maxHealth);
-                Debug.Log("HP collected! Current Lives: " + pc.currentHealth);
+                PlayerHealth health = pc.GetComponent<PlayerHealth>();
+                health.Heal(20f);
+                UnityEngine.Debug.Log($"Collected HP → Current HP: {health.GetHealthPercent() * 100f}%");
                 break;
         }
 
