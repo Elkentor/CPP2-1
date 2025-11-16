@@ -1356,15 +1356,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.94
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1988,7 +1988,7 @@ Transform:
   m_GameObject: {fileID: 1047093372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 156.24, y: 3.15, z: 356.5}
+  m_LocalPosition: {x: 161.9, y: 1.91, z: 357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2012,10 +2012,6 @@ MonoBehaviour:
   sprintMultiplier: 2
   jumpHeight: 1.5
   gravity: -9.81
-  maxHealth: 100
-  currentHealth: 0
-  Score: 0
-  Lives: 1
   cameraHolder: {fileID: 525036606}
   mouseSensitivity: 2
   pickupInRange: {fileID: 0}
@@ -2120,6 +2116,7 @@ GameObject:
   - component: {fileID: 1080598048}
   - component: {fileID: 1080598047}
   - component: {fileID: 1080598046}
+  - component: {fileID: 1080598049}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2188,6 +2185,23 @@ Transform:
   - {fileID: 1105317597}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1080598049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080598045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f74fd3019f28842a4062fe3b20156f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  maxHealth: 20
+  detectionRange: 10
+  attackRange: 2
+  attackCooldown: 1.5
+  patrolPoints: []
 --- !u!4 &1090241746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
@@ -2717,14 +2731,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634295647}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15716685, y: -0, z: -0, w: 0.9875721}
-  m_LocalPosition: {x: 0.6399994, y: 2.510641, z: -1.3870544}
+  m_LocalRotation: {x: 0.15674773, y: -0.072076835, z: -0.011470647, w: 0.9849383}
+  m_LocalPosition: {x: 0.8800049, y: 3.42, z: -1.6199951}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 525036606}
   m_Father: {fileID: 1047093374}
-  m_LocalEulerAnglesHint: {x: 18.085, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.886, y: -8.799, z: -2.722}
 --- !u!1 &1644635096 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7437998508668031039, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}

@@ -40,7 +40,7 @@ public class Projectile : MonoBehaviour
         if (projectileType == ProjectileType.Player)
         {
             // Damage enemy
-            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
             if (enemy != null)
             {
                 enemy.TakeDamage(10);
