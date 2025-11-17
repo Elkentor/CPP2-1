@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     public Pickups pickupInRange;
+    public float attackRange = 2f;
+    public int attackDamage = 10;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -91,6 +93,16 @@ public class PlayerMovement : MonoBehaviour
         if (attackAction != null && attackAction.triggered)
         {
             animator.SetTrigger("Attack");
+            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange);
+            foreach (Collider enemy in hitEnemies)
+            {
+                EnemyAI ai = enemy.GetComponent<EnemyAI>();
+                if (ai != null)
+                {
+                    ai.TakeDamage(attackDamage);
+                }
+            }
+
         }
 
         // Dodge
@@ -158,4 +170,11 @@ public class PlayerMovement : MonoBehaviour
     {
         GetComponent<PlayerHealth>().isBlocking = false;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
 }
