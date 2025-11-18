@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         Debug.Log("Player died.");
-        anim.SetTrigger("Dead");
+        anim.SetTrigger("IsDead");
         GameManager.Instance.PlayerDied(); // Notify GameManager
     }
 
