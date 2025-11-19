@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         if (interactAction != null && interactAction.triggered && pickupInRange != null)
         {
             animator.SetTrigger("Interact");
-            pickupInRange.Collect(this);
+            pickupInRange.Collect();
         }
 
         HandleLook();

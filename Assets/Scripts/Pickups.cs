@@ -6,20 +6,21 @@ public class Pickups : MonoBehaviour
     {
         Life = 0,
         Score = 1,
-        HP = 2
+        HP = 2,
+        Victory = 3
     }
 
     public PickupType pickupType = PickupType.Life; // Type of the pickup
     private bool playerInRange = false;
+    private PlayerMovement player;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            player = other.GetComponent<PlayerMovement>();
+            player.pickupInRange = this;
             playerInRange = true;
-
-            PlayerMovement pm = other.GetComponent<PlayerMovement>();
-            pm.pickupInRange = this;
 
             UI_Prompt.Instance.Show("Interact");
         }
@@ -29,18 +30,21 @@ public class Pickups : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = false;
+            if (player != null)
+                player.pickupInRange = null;
 
-            PlayerMovement pm = other.GetComponent<PlayerMovement>();
-            pm.pickupInRange = null;
+            player = null;
+            playerInRange = false;
 
             UI_Prompt.Instance.Hide();
         }
     }
 
-    public void Collect(PlayerMovement pc)
+    public void Collect()
     {
-        if (!playerInRange) return;
+        if (!playerInRange || player == null) return;
+
+        PlayerHealth health = player.GetComponent<PlayerHealth>();
 
         switch (pickupType)
         {
@@ -55,13 +59,25 @@ public class Pickups : MonoBehaviour
                 break;
 
             case PickupType.HP:
-                PlayerHealth health = pc.GetComponent<PlayerHealth>();
-                health.Heal(20f);
-                UnityEngine.Debug.Log($"Collected HP → Current HP: {health.GetHealthPercent() * 100f}%");
+                if (health != null)
+                {
+                    health.Heal(20f);
+                    UnityEngine.Debug.Log($"Collected HP → Current HP: {health.GetHealthPercent() * 100f}%");
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError("ERROR: PlayerHealth NOT FOUND on player!");
+                }
+                break;
+
+            case PickupType.Victory:
+                GameManager.Instance.SetState(GameManager.GameState.Victory);
+                UnityEngine.Debug.Log("Collected VICTORY → You win!");
                 break;
         }
 
         UI_Prompt.Instance.Hide();
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }
+
