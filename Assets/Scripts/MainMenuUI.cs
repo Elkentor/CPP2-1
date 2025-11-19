@@ -34,5 +34,18 @@ public class MainMenuUI : MonoBehaviour
         {
             Debug.LogError("GameManager not found! Make sure it exists in the scene.");
         }
+    }
+
+    public void ResumeGame()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResumeGame();
         }
+        else
+        {
+            Debug.LogError("GameManager not found! Make sure it exists in the scene.");
+        }
+    }
+
 }

@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int maxLives = 9;
     [SerializeField] private Transform RespawnPoint;
+    [SerializeField] private GameObject pauseMenuUI;
+
     public GameState currentState;
 
-    public enum GameState { Title, Playing, GameOver }
+    public enum GameState { Title, Playing, Paused, GameOver, Victory }
 
     public int Score { get; private set; } = 0;
     public int Lives { get; private set; } = 3;
@@ -36,32 +38,55 @@ public class GameManager : MonoBehaviour
         {
             LoadTitleMenu();
         }
+        if (currentState == GameState.Playing && Input.GetKeyDown(KeyCode.P))
+        {
+            PauseGame();
+        }
+        else if (currentState == GameState.Paused && Input.GetKeyDown(KeyCode.P))
+        {
+            ResumeGame();
+        }
     }
 
     public void SetState(GameState newState)
     {
         currentState = newState;
+        Time.timeScale = 1f;
+
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(false);
 
         switch (newState)
         {
             case GameState.Title:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 SceneManager.LoadScene("TitleMenu");
                 break;
+
             case GameState.Playing:
                 Lives = 3;
                 Score = 0;
                 SceneManager.LoadScene("GameScene");
                 StartCoroutine(AssignRespawnPointAfterSceneLoad());
                 break;
+
             case GameState.GameOver:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 SceneManager.LoadScene("GameOverMenu");
+                break;
+
+            case GameState.Victory:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("VictoryMenu");
                 break;
         }
     }
 
     private IEnumerator AssignRespawnPointAfterSceneLoad()
     {
-        // Wait one frame for the new scene to load
         yield return null;
 
         GameObject found = GameObject.Find("RespawnPoint");
@@ -74,7 +99,28 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("RespawnPoint not found in GameScene!");
         }
+
+        GameObject canvas = GameObject.Find("Canvas");
+        if (canvas != null)
+        {
+            Transform pauseTransform = canvas.transform.Find("PauseMenu");
+            if (pauseTransform != null)
+            {
+                pauseMenuUI = pauseTransform.gameObject;
+                pauseMenuUI.SetActive(false);
+                Debug.Log("PauseMenu UI assigned from Canvas");
+            }
+            else
+            {
+                Debug.LogWarning("PauseMenu not found under Canvas");
+            }
+        }
+        else
+        {
+            Debug.LogError("Canvas not found in GameScene!");
+        }
     }
+
 
     public void PlayerDied()
     {
@@ -138,6 +184,32 @@ public class GameManager : MonoBehaviour
         SetState(GameState.Title);
     }
 
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        currentState = GameState.Paused;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(true);
+        Debug.Log("Game paused");
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        currentState = GameState.Playing;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(false);
+        Debug.Log("Game resumed");
+    }
+
     public void ExitGame()
     {
         Debug.Log("Exiting game...");
@@ -147,4 +219,5 @@ public class GameManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false; // Stops play mode in the editor
 #endif
     }
+
 }

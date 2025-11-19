@@ -546,6 +546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   maxLives: 9
   RespawnPoint: {fileID: 0}
+  pauseMenuUI: {fileID: 0}
   currentState: 0
 --- !u!4 &751329396
 Transform:
