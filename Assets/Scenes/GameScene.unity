@@ -1776,7 +1776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef7efe22919ca9a4fb3a5155f9aa95a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoisonHazard
-  damageOverTime: 15
+  totalDamage: 15
+  duration: 5
 --- !u!1 &689211313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3054,6 +3055,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f74fd3019f28842a4062fe3b20156f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  dropPool:
+  - {fileID: 826188616907795265, guid: fb812b8245b271c408c82b13fc235714, type: 3}
+  - {fileID: 4754854790080259983, guid: d22c9b403242c5b4a86891e28686e5b7, type: 3}
+  dropPoint: {fileID: 1080598048}
   maxHealth: 20
   detectionRange: 20
   attackRange: 2

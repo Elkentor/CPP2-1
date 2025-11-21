@@ -12,6 +12,10 @@ public class EnemyAI : MonoBehaviour
         Dead
     }
 
+    [Header("Drops")]
+    public GameObject[] dropPool; // assign the allowed drops for THIS enemy
+    public Transform dropPoint;   // where the drop will appear (center or enemy feet)
+
     [Header("Stats")]
     public int maxHealth = 20;
     private int currentHealth;
@@ -148,7 +152,24 @@ public class EnemyAI : MonoBehaviour
             animator.SetTrigger("Die");
 
         agent.enabled = false;
-        Destroy(gameObject, 3f); // Wait for death animation
+        this.enabled = false;
+
+        SpawnDrop();
+
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+            col.enabled = false;
+        Destroy(gameObject, 15f); // Wait for death animation
+    }
+
+    private void SpawnDrop()
+    {
+        if (dropPool == null || dropPool.Length == 0) return;
+
+        int index = Random.Range(0, dropPool.Length);
+        GameObject chosenDrop = dropPool[index];
+
+        Instantiate(chosenDrop, dropPoint.position, Quaternion.identity);
     }
 
     private void OnDrawGizmosSelected()
