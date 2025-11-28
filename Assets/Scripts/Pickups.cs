@@ -7,10 +7,13 @@ public class Pickups : MonoBehaviour
         Life = 0,
         Score = 1,
         HP = 2,
-        Victory = 3
+        Victory = 3,
+        Weapon = 4
     }
 
     public PickupType pickupType = PickupType.Life; // Type of the pickup
+    public GameObject weaponPrefab; // Weapon prefab if pickupType is Weapon
+    private bool isTwoHanded = false;
     private bool playerInRange = false;
     private PlayerMovement player;
 
@@ -74,6 +77,23 @@ public class Pickups : MonoBehaviour
                 GameManager.Instance.SetState(GameManager.GameState.Victory);
                 UnityEngine.Debug.Log("Collected VICTORY → You win!");
                 break;
+
+            case PickupType.Weapon:
+                PlayerWeaponController weaponController = player.GetComponent<PlayerWeaponController>();
+                if (weaponController != null && weaponPrefab != null)
+                {
+                    weaponController.EquipWeapon(weaponPrefab, isTwoHanded);
+                    UnityEngine.Debug.Log($"Collected WEAPON → Equipped {(isTwoHanded ? "2H" : "1H")} weapon");
+
+                    UI_Prompt.Instance.Hide();
+                    return;
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError("ERROR: WeaponController or weaponPrefab missing!");
+                }
+                break;
+
         }
 
         UI_Prompt.Instance.Hide();
