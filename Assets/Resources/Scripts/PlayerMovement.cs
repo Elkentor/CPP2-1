@@ -160,7 +160,10 @@ public class PlayerMovement : MonoBehaviour
             pickupInRange.Collect();
         }
 
-        HandleLook();
+        if (GameManager.Instance.currentState == GameManager.GameState.Playing)
+        {
+            HandleLook();
+        }
     }
 
     public void ResetState()

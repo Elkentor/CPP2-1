@@ -54,12 +54,12 @@ public class Pickups : MonoBehaviour
         {
             case PickupType.Life:
                 GameManager.Instance.AddLife(1);
-                UnityEngine.Debug.Log("Collected LIFE → +1 life");
+                UnityEngine.Debug.Log($"Collected LIFE → Current Lives: {GameManager.Instance.Lives}");
                 break;
 
             case PickupType.Score:
                 GameManager.Instance.AddScore(1);
-                UnityEngine.Debug.Log("Collected SCORE → +1 point");
+                UnityEngine.Debug.Log($"Collected SCORE → Current Score: {GameManager.Instance.Score}");
                 break;
 
             case PickupType.HP:

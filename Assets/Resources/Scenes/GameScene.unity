@@ -2892,7 +2892,7 @@ MonoBehaviour:
   cameraHolder: {fileID: 525036606}
   mouseSensitivity: 2
   pickupInRange: {fileID: 0}
-  attackRange: 2
+  attackRange: 0
   attackDamage: 10
 --- !u!143 &1047093376
 CharacterController:
