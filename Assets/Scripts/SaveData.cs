@@ -18,6 +18,9 @@ public class PlayerData
     public int Lives = 3;
     public float[] Position = new float[3];         // x, y, z
     public QuaternionData Rotation = new QuaternionData();
+    public float CurrentHealth = 100f;
+    public string EquippedWeaponId = "";
+    public bool IsTwoHanded = false;
 }
 
 [Serializable]

@@ -48,6 +48,7 @@ public class Pickups : MonoBehaviour
         if (!playerInRange || player == null) return;
 
         PlayerHealth health = player.GetComponent<PlayerHealth>();
+        PlayerWeaponController weaponController = player.GetComponent<PlayerWeaponController>();
 
         switch (pickupType)
         {
@@ -79,7 +80,6 @@ public class Pickups : MonoBehaviour
                 break;
 
             case PickupType.Weapon:
-                PlayerWeaponController weaponController = player.GetComponent<PlayerWeaponController>();
                 if (weaponController != null && weaponPrefab != null)
                 {
                     weaponController.EquipWeapon(weaponPrefab, isTwoHanded);
@@ -96,8 +96,24 @@ public class Pickups : MonoBehaviour
 
         }
 
+        var data = SaveSystem.Load() ?? new SaveData();
+        data.Player.Lives = GameManager.Instance.Lives;
+        data.Score = GameManager.Instance.Score;
+
+        if (health != null) 
+            data.Player.CurrentHealth = health.GetCurrentHealth();
+
+        if (weaponPrefab != null)
+        {
+            data.Player.EquippedWeaponId = weaponPrefab.name; // or a custom ID
+            data.Player.IsTwoHanded = isTwoHanded;
+        }
+
+        SaveSystem.Save(data);
+
         UI_Prompt.Instance.Hide();
         Destroy(transform.parent.gameObject);
+
     }
 }
 

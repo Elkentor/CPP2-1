@@ -63,4 +63,11 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player health reset to max.");
     }
 
+    public void SetHealth(float value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
+        isDead = (currentHealth <= 0);
+        Debug.Log($"Health restored to {currentHealth}");
+    }
+
 }

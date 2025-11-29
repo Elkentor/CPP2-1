@@ -8,6 +8,9 @@ public class PlayerWeaponController : MonoBehaviour
     private GameObject currentWeapon;
     private GameObject currentPrefab;
 
+    public GameObject CurrentWeaponPrefab { get; private set; }
+    public bool IsTwoHanded { get; private set; }
+
     public void EquipWeapon(GameObject weaponPrefab, bool twoHanded)
     {
         if (currentPrefab == weaponPrefab)
@@ -36,5 +39,7 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon.transform.localRotation = Quaternion.identity;
 
         currentPrefab = weaponPrefab;
+        CurrentWeaponPrefab = weaponPrefab;
+        IsTwoHanded = twoHanded;
     }
 }

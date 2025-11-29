@@ -127,7 +127,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void PlayerDied()
     {
         Lives--;
@@ -229,15 +228,34 @@ public class GameManager : MonoBehaviour
     public void SavePrototypeState()
     {
         SaveData data = new SaveData();
-        // populate
         data.Player.Lives = Lives;
+        data.Score = Score;
+
+        var player = Object.FindFirstObjectByType<PlayerMovement>();
+        if (player != null)
+        {
+            Vector3 pos = player.transform.position;
+            data.Player.Position = new float[] { pos.x, pos.y, pos.z };
+            data.Player.Rotation = new QuaternionData(player.transform.rotation);
+
+            var health = player.GetComponent<PlayerHealth>();
+            if (health != null)
+                data.Player.CurrentHealth = health.GetCurrentHealth();
+
+            var weaponController = player.GetComponent<PlayerWeaponController>();
+            if (weaponController != null && weaponController.CurrentWeaponPrefab != null)
+            {
+                data.Player.EquippedWeaponId = weaponController.CurrentWeaponPrefab.name;
+                data.Player.IsTwoHanded = weaponController.IsTwoHanded;
+            }
+        }
+
         if (RespawnPoint != null)
         {
             var p = RespawnPoint.position;
             data.Checkpoint.checkpointPosition = new float[] { p.x, p.y, p.z };
-            data.Checkpoint.checkpointId = "RespawnPoint"; // or real id
+            data.Checkpoint.checkpointId = "RespawnPoint";
         }
-        data.Score = Score;
 
         SaveSystem.Save(data);
     }
@@ -247,7 +265,6 @@ public class GameManager : MonoBehaviour
         SaveSystem.DeleteSave();
         SetState(GameState.Playing);
     }
-
 
     public void ContinueGame()
     {
@@ -259,29 +276,45 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Apply loaded values
         Lives = data.Player.Lives;
         Score = data.Score;
 
-        // Transition to game scene and after load place player at checkpoint
-        SetState(GameState.Playing);
+        SetState(GameState.Playing, false);
         StartCoroutine(ApplyCheckpointAfterSceneLoad(data));
     }
 
-    private System.Collections.IEnumerator ApplyCheckpointAfterSceneLoad(SaveData data)
+    private IEnumerator ApplyCheckpointAfterSceneLoad(SaveData data)
     {
-        // wait one frame for scene load etc.
         yield return null;
-        // find player
+
         var player = Object.FindFirstObjectByType<PlayerMovement>();
-        if (player != null && data.Checkpoint.checkpointPosition != null && data.Checkpoint.checkpointPosition.Length == 3)
+        if (player != null)
         {
-            player.transform.position = new UnityEngine.Vector3(
-                data.Checkpoint.checkpointPosition[0],
-                data.Checkpoint.checkpointPosition[1],
-                data.Checkpoint.checkpointPosition[2]
-            );
-            // optionally restore health, inventory, etc.
+            if (data.Player.Position?.Length == 3)
+            {
+                player.transform.position = new Vector3(
+                    data.Player.Position[0],
+                    data.Player.Position[1],
+                    data.Player.Position[2]
+                );
+            }
+
+            player.transform.rotation = data.Player.Rotation.ToQuaternion();
+
+            var health = player.GetComponent<PlayerHealth>();
+            if (health != null)
+                health.SetHealth(data.Player.CurrentHealth);
+
+            var weaponController = player.GetComponent<PlayerWeaponController>();
+            if (weaponController != null && !string.IsNullOrEmpty(data.Player.EquippedWeaponId))
+            {
+                var weaponPrefab = Resources.Load<GameObject>(data.Player.EquippedWeaponId);
+                if (weaponPrefab != null)
+                {
+                    weaponController.EquipWeapon(weaponPrefab, data.Player.IsTwoHanded);
+                }
+            }
         }
     }
 }
+
