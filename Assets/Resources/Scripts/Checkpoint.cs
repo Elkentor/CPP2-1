@@ -17,8 +17,9 @@ public class Checkpoint : MonoBehaviour
     {
         Debug.Log($"Checkpoint {checkpointId} activated.");
 
-        // ? Just tell GameManager to save everything
         GameManager.Instance.HasCheckpoint = true;
+        GameManager.Instance.LastCheckpointPosition = transform.position;
         GameManager.Instance.SavePrototypeState();
     }
+
 }

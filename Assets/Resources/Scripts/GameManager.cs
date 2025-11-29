@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public int Version = 1;
     public string Savedat = "";
     public bool HasCheckpoint = false;
+    public Vector3 LastCheckpointPosition { get; set; }
+
 
     private void Awake()
     {
@@ -159,10 +161,18 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f); // small delay after death
 
         var player = Object.FindFirstObjectByType<PlayerMovement>();
-        if (player != null && RespawnPoint != null)
+        if (player != null)
         {
-            Debug.Log("Respawning player at: " + RespawnPoint.position);
-            player.transform.position = RespawnPoint.position;
+            if (HasCheckpoint)
+                {
+                Debug.Log("Respawning player at checkpoint.");
+                }
+            else if (RespawnPoint != null)
+            {
+                Debug.Log("Respawning player at default respawn point.");
+                player.transform.position = RespawnPoint.position;
+            }
+
             player.ResetState();
 
             var health = player.GetComponent<PlayerHealth>();
@@ -245,7 +255,7 @@ public class GameManager : MonoBehaviour
             var weaponController = player.GetComponent<PlayerWeaponController>();
             if (weaponController != null && weaponController.CurrentWeaponPrefab != null)
             {
-                data.Player.EquippedWeaponId = weaponController.CurrentWeaponPrefab.name;
+                data.Player.EquippedWeaponId = "Weapons/" + weaponController.CurrentWeaponPrefab.name;
                 data.Player.IsTwoHanded = weaponController.IsTwoHanded;
             }
         }
@@ -264,6 +274,13 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.DeleteSave();
         SetState(GameState.Playing);
+    }
+
+    public void SetCheckpoint(Vector3 position)
+    {
+        HasCheckpoint = true;
+        LastCheckpointPosition = position;
+        SavePrototypeState();
     }
 
     public void ContinueGame()
@@ -294,18 +311,16 @@ public class GameManager : MonoBehaviour
             player = Object.FindFirstObjectByType<PlayerMovement>();
         }
 
-        if (player != null)
+        if (HasCheckpoint && data.Checkpoint.checkpointPosition?.Length == 3)
         {
-            if (data.Player.Position?.Length == 3)
-            {
-                player.transform.position = new Vector3(
-                    data.Player.Position[0],
-                    data.Player.Position[1],
-                    data.Player.Position[2]
-                );
-            }
-
+            player.transform.position = new Vector3(
+                data.Checkpoint.checkpointPosition[0],
+                data.Checkpoint.checkpointPosition[1],
+                data.Checkpoint.checkpointPosition[2]
+            );
             player.transform.rotation = data.Player.Rotation.ToQuaternion();
+            Debug.Log("Player respawned at checkpoint: ");
+        }
 
             var health = player.GetComponent<PlayerHealth>();
             if (health != null)
@@ -316,10 +331,14 @@ public class GameManager : MonoBehaviour
             {
                 var weaponPrefab = Resources.Load<GameObject>(data.Player.EquippedWeaponId);
                 if (weaponPrefab != null)
+                {
                     weaponController.EquipWeapon(weaponPrefab, data.Player.IsTwoHanded);
                 }
+                
             }
         }
+
     }
+
 
 
