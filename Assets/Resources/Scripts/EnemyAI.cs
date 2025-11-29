@@ -137,11 +137,15 @@ public class EnemyAI : MonoBehaviour
 
         currentHealth -= dmg;
 
-        if (animator != null)
-            animator.SetTrigger("Hit");
-
         if (currentHealth <= 0)
+        {
             Die();
+        }
+        else
+        {
+            if (animator != null)
+                animator.SetTrigger("Hit");
+        }
     }
 
     private void Die()
