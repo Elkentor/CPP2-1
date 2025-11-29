@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetState(GameState newState)
+    public void SetState(GameState newState, bool isNewGame = true)
     {
         currentState = newState;
         Time.timeScale = 1f;
@@ -68,8 +68,11 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Playing:
-                Lives = 3;
-                Score = 0;
+                if (isNewGame)
+                {
+                    Lives = 3;
+                    Score = 0;
+                }
                 SceneManager.LoadScene("GameScene");
                 StartCoroutine(AssignRespawnPointAfterSceneLoad());
                 break;
