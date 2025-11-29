@@ -279,15 +279,21 @@ public class GameManager : MonoBehaviour
         Lives = data.Player.Lives;
         Score = data.Score;
 
+        HasCheckpoint = true;
+
         SetState(GameState.Playing, false);
         StartCoroutine(ApplyCheckpointAfterSceneLoad(data));
     }
 
     private IEnumerator ApplyCheckpointAfterSceneLoad(SaveData data)
     {
-        yield return null;
+        PlayerMovement player = null;
+        while (player == null)
+        {
+            yield return null;
+            player = Object.FindFirstObjectByType<PlayerMovement>();
+        }
 
-        var player = Object.FindFirstObjectByType<PlayerMovement>();
         if (player != null)
         {
             if (data.Player.Position?.Length == 3)
@@ -310,11 +316,10 @@ public class GameManager : MonoBehaviour
             {
                 var weaponPrefab = Resources.Load<GameObject>(data.Player.EquippedWeaponId);
                 if (weaponPrefab != null)
-                {
                     weaponController.EquipWeapon(weaponPrefab, data.Player.IsTwoHanded);
                 }
             }
         }
     }
-}
+
 
