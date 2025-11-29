@@ -13,7 +13,7 @@ public class Pickups : MonoBehaviour
 
     public PickupType pickupType = PickupType.Life; // Type of the pickup
     public GameObject weaponPrefab; // Weapon prefab if pickupType is Weapon
-    private bool isTwoHanded = false;
+    [SerializeField] private bool isTwoHanded = false;
     private bool playerInRange = false;
     private PlayerMovement player;
 

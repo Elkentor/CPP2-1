@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 258537431336244134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 170.62, y: 1.01, z: 351.89}
+  m_LocalPosition: {x: 169.51, y: 1, z: 352.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 4969804655843393016}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.9599915, y: 0.120000005, z: 9.149811}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pickups
   pickupType: 4
   weaponPrefab: {fileID: 258537431336244134}
+  isTwoHanded: 1
 --- !u!135 &4600743920701332811
 SphereCollider:
   m_ObjectHideFlags: 0

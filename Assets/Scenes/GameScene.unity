@@ -1755,6 +1755,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7997947301047521070, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
   m_PrefabInstance: {fileID: 645826544}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &645826547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4025133613917730222, guid: ec33f7494db3fd94487002bdb304ae5a, type: 3}
+  m_PrefabInstance: {fileID: 645826544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &657436109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f38a2c94bf8f72c47abf9398720314fc, type: 3}
@@ -2994,6 +2999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponController
   rightHand: {fileID: 645826546}
   leftHand: {fileID: 645826545}
+  shieldObject: {fileID: 645826547}
 --- !u!1 &1080598045
 GameObject:
   m_ObjectHideFlags: 0
@@ -5199,18 +5205,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4764377725367126267, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764377725367126267, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764377725367126267, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 2773081043910488882, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 9199644057014383548, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
     - target: {fileID: 5228293021589409089, guid: c36948f7b4b63554b83c52cdc7e20175, type: 3}
       propertyPath: m_LocalPosition.x
       value: 173.37
@@ -5268,21 +5266,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 187370184512119603, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 187370184512119603, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 187370184512119603, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 258537431336244134, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
       propertyPath: m_Name
       value: 2H_Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 3422416119442369081, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
+      propertyPath: isTwoHanded
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4326969914699753177, guid: f068ecd7adc327846a66d27fbe9c923e, type: 3}
       propertyPath: m_LocalPosition.x

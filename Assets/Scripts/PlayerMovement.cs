@@ -19,8 +19,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     public Pickups pickupInRange;
-    public float attackRange = 2f;
+    public float attackRange = 2.5f;
     public int attackDamage = 10;
+    private PlayerWeaponController weaponController;
+    private float attackCooldown = 0f;
+    private float attackDelay = 0.5f;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        weaponController = GetComponent<PlayerWeaponController>();
     }
 
     void Update()
@@ -90,9 +94,17 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         // Attack
-        if (attackAction != null && attackAction.triggered)
+        if (attackAction != null && attackAction.triggered && Time.time >= attackCooldown)
         {
+            // Update stats based on weapon type
+            bool isTwoHanded = weaponController != null && weaponController.IsTwoHanded;
+
+            attackRange = isTwoHanded ? 4f : 2.5f;
+            attackDamage = isTwoHanded ? 20 : 10;
+            attackDelay = isTwoHanded ? 1.2f : 0.5f;
+
             animator.SetTrigger("Attack");
+
             Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange);
             foreach (Collider enemy in hitEnemies)
             {
@@ -103,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+            attackCooldown = Time.time + attackDelay;
         }
 
         // Dodge

@@ -5,6 +5,9 @@ public class PlayerWeaponController : MonoBehaviour
     public Transform rightHand;
     public Transform leftHand;
 
+    [Header("Optional Shield Reference")]
+    public GameObject shieldObject;
+
     private GameObject currentWeapon;
     private GameObject currentPrefab;
 
@@ -13,6 +16,12 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void EquipWeapon(GameObject weaponPrefab, bool twoHanded)
     {
+        if(weaponPrefab == null)
+        {
+            Debug.LogError("Weapon prefab is null.");
+            return;
+        }
+
         if (currentPrefab == weaponPrefab)
         {
             Debug.Log("Weapon already equipped.");
@@ -20,26 +29,25 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         if(currentWeapon != null)
+        {
             Destroy(currentWeapon);
-        
-
-        currentWeapon = Instantiate(weaponPrefab);
-
-        // attach weapon depending on type
-        if (!twoHanded)
-        {
-            currentWeapon.transform.SetParent(rightHand);
-        }
-        else
-        {
-            currentWeapon.transform.SetParent(leftHand);
+            currentWeapon = null;
         }
 
+        currentWeapon = Instantiate(weaponPrefab, rightHand);
         currentWeapon.transform.localPosition = Vector3.zero;
         currentWeapon.transform.localRotation = Quaternion.identity;
+        currentWeapon.transform.localScale = Vector3.one;
 
         currentPrefab = weaponPrefab;
         CurrentWeaponPrefab = weaponPrefab;
         IsTwoHanded = twoHanded;
+
+        if (shieldObject != null)
+        {
+            shieldObject.SetActive(!twoHanded);
+        }
+
+        Debug.Log($"Equipped weapon: {weaponPrefab.name}, TwoHanded={IsTwoHanded}");
     }
 }
