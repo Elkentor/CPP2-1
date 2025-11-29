@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
 
     public int Score { get; private set; } = 0;
     public int Lives { get; private set; } = 3;
+    public int Version = 1;
+    public string Savedat = "";
+    public bool HasCheckpoint = false;
 
     private void Awake()
     {
@@ -220,4 +223,62 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    public void SavePrototypeState()
+    {
+        SaveData data = new SaveData();
+        // populate
+        data.Player.Lives = Lives;
+        if (RespawnPoint != null)
+        {
+            var p = RespawnPoint.position;
+            data.Checkpoint.checkpointPosition = new float[] { p.x, p.y, p.z };
+            data.Checkpoint.checkpointId = "RespawnPoint"; // or real id
+        }
+        data.Score = Score;
+
+        SaveSystem.Save(data);
+    }
+
+    public void NewGame()
+    {
+        SaveSystem.DeleteSave();
+        SetState(GameState.Playing);
+    }
+
+
+    public void ContinueGame()
+    {
+        var data = SaveSystem.Load();
+        if (data == null)
+        {
+            Debug.LogWarning("No save found, starting new game.");
+            SetState(GameState.Playing);
+            return;
+        }
+
+        // Apply loaded values
+        Lives = data.Player.Lives;
+        Score = data.Score;
+
+        // Transition to game scene and after load place player at checkpoint
+        SetState(GameState.Playing);
+        StartCoroutine(ApplyCheckpointAfterSceneLoad(data));
+    }
+
+    private System.Collections.IEnumerator ApplyCheckpointAfterSceneLoad(SaveData data)
+    {
+        // wait one frame for scene load etc.
+        yield return null;
+        // find player
+        var player = Object.FindFirstObjectByType<PlayerMovement>();
+        if (player != null && data.Checkpoint.checkpointPosition != null && data.Checkpoint.checkpointPosition.Length == 3)
+        {
+            player.transform.position = new UnityEngine.Vector3(
+                data.Checkpoint.checkpointPosition[0],
+                data.Checkpoint.checkpointPosition[1],
+                data.Checkpoint.checkpointPosition[2]
+            );
+            // optionally restore health, inventory, etc.
+        }
+    }
 }

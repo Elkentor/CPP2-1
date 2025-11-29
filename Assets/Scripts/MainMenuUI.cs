@@ -5,16 +5,23 @@ public class MainMenuUI : MonoBehaviour
 {
     public void StartGame()
     {
-        if (GameManager.Instance != null)
+        SaveSystem.DeleteSave(); // Clear previous save data when starting a new game
+        GameManager.Instance.StartGame();
+    }
+
+    public void ContinueGame()
+    {
+        if (SaveSystem.SaveExists())
         {
-            GameManager.Instance.StartGame();
+            GameManager.Instance.ContinueGame();
         }
         else
         {
-            Debug.LogError("GameManager not found! Make sure it exists in the scene.");
+            Debug.Log("No save file found ? Starting a new game.");
+            StartGame();
         }
     }
-   
+
     public void ExitGame()
     {
         Debug.Log("Quitting game...");
@@ -25,27 +32,14 @@ public class MainMenuUI : MonoBehaviour
     }
 
     public void LoadTitleMenu()
-    {
-        if (GameManager.Instance != null)
         {
             GameManager.Instance.LoadTitleMenu();
         }
-        else
-        {
-            Debug.LogError("GameManager not found! Make sure it exists in the scene.");
-        }
-    }
+    
 
     public void ResumeGame()
-    {
-        if (GameManager.Instance != null)
         {
             GameManager.Instance.ResumeGame();
         }
-        else
-        {
-            Debug.LogError("GameManager not found! Make sure it exists in the scene.");
-        }
-    }
 
 }
