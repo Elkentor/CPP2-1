@@ -9441,14 +9441,14 @@ PrefabInstance:
     - target: {fileID: 2138068839231429188, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 3290745137917659444, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
+      objectReference: {fileID: 2100000, guid: b53a02d835065484d9fb4066657b9738, type: 2}
     - target: {fileID: 2138068839231429188, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: -7207536189302928068, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
+      objectReference: {fileID: 2100000, guid: b53a02d835065484d9fb4066657b9738, type: 2}
     - target: {fileID: 2138068839231429188, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
       propertyPath: m_SelectedEditorRenderState
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2345641475143599398, guid: ae923e6412f28f8419b975e1b9105e43, type: 3}
       propertyPath: m_LocalPosition.x
