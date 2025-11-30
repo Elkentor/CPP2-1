@@ -166,7 +166,8 @@ public class GameManager : MonoBehaviour
             if (HasCheckpoint)
                 {
                 Debug.Log("Respawning player at checkpoint.");
-                }
+                player.transform.position = LastCheckpointPosition;
+            }
             else if (RespawnPoint != null)
             {
                 Debug.Log("Respawning player at default respawn point.");
@@ -260,11 +261,19 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (RespawnPoint != null)
+        if (HasCheckpoint)
+        {
+            var p = LastCheckpointPosition;
+            data.Checkpoint.checkpointPosition = new float[] { p.x, p.y, p.z };
+            data.Checkpoint.checkpointId = "Checkpoint";
+            data.Checkpoint.HasCheckpoint = true;
+        }
+        else if (RespawnPoint != null)
         {
             var p = RespawnPoint.position;
             data.Checkpoint.checkpointPosition = new float[] { p.x, p.y, p.z };
             data.Checkpoint.checkpointId = "RespawnPoint";
+            data.Checkpoint.HasCheckpoint = false;
         }
 
         SaveSystem.Save(data);
@@ -296,7 +305,16 @@ public class GameManager : MonoBehaviour
         Lives = data.Player.Lives;
         Score = data.Score;
 
-        HasCheckpoint = true;
+        HasCheckpoint = data.Checkpoint.HasCheckpoint;
+
+
+        if (HasCheckpoint && data.Checkpoint.checkpointPosition.Length == 3)
+            {
+            LastCheckpointPosition = new Vector3(
+            data.Checkpoint.checkpointPosition[0],
+            data.Checkpoint.checkpointPosition[1],
+            data.Checkpoint.checkpointPosition[2]);
+            }
 
         SetState(GameState.Playing, false);
         StartCoroutine(ApplyCheckpointAfterSceneLoad(data));
@@ -311,18 +329,26 @@ public class GameManager : MonoBehaviour
             player = Object.FindFirstObjectByType<PlayerMovement>();
         }
 
+        yield return null;
+        yield return null;
+
         if (HasCheckpoint && data.Checkpoint.checkpointPosition?.Length == 3)
         {
-            player.transform.position = new Vector3(
+            Vector3 cp = new Vector3(
                 data.Checkpoint.checkpointPosition[0],
                 data.Checkpoint.checkpointPosition[1],
                 data.Checkpoint.checkpointPosition[2]
             );
-            player.transform.rotation = data.Player.Rotation.ToQuaternion();
+
+            player.transform.SetPositionAndRotation(cp, data.Player.Rotation.ToQuaternion());
             Debug.Log("Player respawned at checkpoint: ");
         }
+        else
+        {
+            Debug.Log("No checkpoint data found, player at default spawn.");
+        }
 
-            var health = player.GetComponent<PlayerHealth>();
+        var health = player.GetComponent<PlayerHealth>();
             if (health != null)
                 health.SetHealth(data.Player.CurrentHealth);
 
