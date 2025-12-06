@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -11,6 +13,11 @@ public class EnemyAI : MonoBehaviour
         Hit,
         Dead
     }
+
+    public event System.Action OnEnemyDeath;
+
+    [Header("UI")]
+    public Image healthBarFill;
 
     [Header("Drops")]
     public GameObject[] dropPool; // assign the allowed drops for THIS enemy
@@ -146,6 +153,12 @@ public class EnemyAI : MonoBehaviour
             if (animator != null)
                 animator.SetTrigger("Hit");
         }
+
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = (float)currentHealth / maxHealth;
+        }
+
     }
 
     private void Die()
@@ -163,8 +176,25 @@ public class EnemyAI : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null)
             col.enabled = false;
+
+        if (healthBarFill != null)
+        {
+            StartCoroutine(HideHealthBarAfterDelay(0.5f));
+        }
+
+        OnEnemyDeath?.Invoke();
+
         Destroy(gameObject, 15f); // Wait for death animation
     }
+
+    private IEnumerator HideHealthBarAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (healthBarFill != null)
+            Destroy(healthBarFill.transform.parent.gameObject);
+        // destroys the whole health bar canvas
+    }
+
 
     private void SpawnDrop()
     {
