@@ -12,8 +12,8 @@ public class EnemyWaveSpawner : MonoBehaviour
     [Header("Spawn Area")]
     public BoxCollider spawnArea;        // assign the square collider
 
-    private List<GameObject> currentWaveEnemies = new List<GameObject>();
-    private bool spawning = false;
+    private  readonly List<GameObject> currentWaveEnemies = new();
+    private  readonly bool spawning = false;
 
     void Start()
     {
