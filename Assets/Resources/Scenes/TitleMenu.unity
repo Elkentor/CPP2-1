@@ -235,10 +235,41 @@ PrefabInstance:
       propertyPath: m_MinValue
       value: 0.0001
       objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 762644283}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SoundManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7042211856117160103, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 762644283}
   m_SourcePrefab: {fileID: 100100000, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
 --- !u!224 &195856278 stripped
 RectTransform:
@@ -399,17 +430,35 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4474317097194889734, guid: ebf80d4b33a8d5549944f80197f42eaa, type: 3}
   m_PrefabInstance: {fileID: 3004232136622526442}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &762644281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7042211856117160103, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
+  m_PrefabInstance: {fileID: 195856277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &762644282 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8317556227260720888, guid: 550e5bf165a320e4ba2aa1ff78611128, type: 3}
   m_PrefabInstance: {fileID: 195856277}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 762644281}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &762644283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762644281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f04da0e53529c489f9c404b15d4ea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  volumeSlider: {fileID: 762644282}
 --- !u!1 &819225650
 GameObject:
   m_ObjectHideFlags: 0
